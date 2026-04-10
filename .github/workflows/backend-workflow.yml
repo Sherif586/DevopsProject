@@ -10,6 +10,7 @@ on:
       - "!spring-boot-data-jpa-mysql-master/README.md"
       - "actions/maven-build-action/action.yml"
       
+      
 jobs:
   sast:
     name: Snyk SAST
