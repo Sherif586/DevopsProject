@@ -113,7 +113,7 @@ jobs:
         run: |
           cd spring-boot-data-jpa-mysql-master
           mkdir -p reports
-          npm install
+          # npm install
           snyk auth ${{ secrets.SNYK_TOKEN }}
           snyk container test elmazidi/myapp-backend:${{ env.version }} --json-file-output=reports/container_report.json
           snyk container monitor elmazidi/myapp-backend:${{ env.version }}
