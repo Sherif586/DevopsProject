@@ -149,7 +149,7 @@ jobs:
         env:
           MYSQL_PASSWORD: password
           MYSQL_USERNAME: root
-          DB_HOST: localhost:3306
+          DB_HOST: mysql:3306
           DB_NAME: testdb
         credentials:
           username: ${{ secrets.HARBOR_USERNAME }}
