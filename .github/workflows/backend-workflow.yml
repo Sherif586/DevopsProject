@@ -9,7 +9,6 @@ on:
       - "!README.md"
       - "!spring-boot-data-jpa-mysql-master/README.md"
       - "actions/maven-build-action/action.yml"
-
       
 jobs:
   sast:
