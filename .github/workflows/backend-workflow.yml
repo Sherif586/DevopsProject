@@ -150,7 +150,7 @@ jobs:
         run: |
           cd K8sClusterDevopsProject
           git add .
-          git commit -m "backend version ${{needs.docker-build.outputs.version}}"
+          git diff --staged --quiet && echo "Nothing to commit" || git commit -m "backend version ${{needs.docker-build.outputs.version}}"
       - name: Set Git remote URL
         run: cd K8sClusterDevopsProject && git remote set-url origin https://ELMILYASS:${{ secrets.GITHUBTOKEN }}@github.com/ELMILYASS/K8sClusterDevopsProject.git
       - name: Push changes to Github
