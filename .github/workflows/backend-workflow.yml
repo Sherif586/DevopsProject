@@ -162,6 +162,15 @@ jobs:
             -e DB_NAME=testdb \
             -p 8080:8080 \
             harbor.ibonia.com/elmazidi/myapp-backend:${{needs.docker-build.outputs.version}}
+      - name: Debug backend logs
+        run: |
+          sleep 15
+          echo "=== Backend Container Logs ==="
+          docker logs backend
+          echo "=== Running Containers ==="
+          docker ps -a
+          echo "=== Network ==="
+          docker inspect backend | grep -i network
 
       - name: Test Service Availability
         run: |
