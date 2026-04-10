@@ -143,28 +143,34 @@ jobs:
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-      backend:
-        image: harbor.ibonia.com/elmazidi/myapp-backend:${{needs.docker-build.outputs.version}}
-        ports:
-          - 8080:8080
-        env:
-          MYSQL_PASSWORD: password
-          MYSQL_USERNAME: root
-          DB_HOST: mysql:3306
-          DB_NAME: testdb
-        credentials:
-          username: ${{ secrets.HARBOR_USERNAME }}
-          password: ${{ secrets.HARBOR_PASSWORD }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Log in to Harbor
+        run: docker login harbor.ibonia.com -u ${{ secrets.HARBOR_USERNAME }} -p ${{ secrets.HARBOR_PASSWORD }}
+
+      - name: Run backend container
+        run: |
+          docker run -d \
+            --name backend \
+            --network host \
+            -e MYSQL_PASSWORD=password \
+            -e MYSQL_USERNAME=root \
+            -e DB_HOST=localhost:3306 \
+            -e DB_NAME=testdb \
+            -p 8080:8080 \
+            harbor.ibonia.com/elmazidi/myapp-backend:${{needs.docker-build.outputs.version}}
+
       - name: Test Service Availability
         run: |
-          while ! curl -s http://localhost:8080/ >/dev/null; do
+          timeout 120 bash -c 'while ! curl -s http://localhost:8080/ >/dev/null; do
             echo "Waiting for the service to be available..."
             sleep 5
-          done
+          done'
           echo "Service is now available."
+
       - name: ZAP Scan
         uses: zaproxy/action-baseline@v0.6.1
         with:
@@ -172,8 +178,10 @@ jobs:
           target: 'http://localhost:8080/'
           rules_file_name: '.zap/rules.tsv'
           cmd_options: '-J report_json -a'
+
       - name: Save ZAP Report
         run: mkdir -p reports && mv report_json.json reports/dast_report.json
+
       - name: Upload ZAP Report as Artifact
         uses: actions/upload-artifact@v4
         with:
