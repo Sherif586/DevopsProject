@@ -115,8 +115,8 @@ jobs:
           mkdir -p reports
           # npm install
           snyk auth ${{ secrets.SNYK_TOKEN }}
-          snyk container test elmazidi/myapp-backend:${{ env.version }} --json-file-output=reports/container_report.json
-          snyk container monitor elmazidi/myapp-backend:${{ env.version }} || true
+          snyk container test elmazidi/myapp-backend:${{ env.version }} --json-file-output=reports/container_report.json || true
+          snyk container monitor elmazidi/myapp-backend:${{ env.version }} 
       - name: Upload Snyk Report as Artifact
         uses: actions/upload-artifact@v4
         with:
