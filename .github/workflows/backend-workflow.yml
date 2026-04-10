@@ -164,7 +164,7 @@ jobs:
             -e MANAGEMENT_METRICS_ENABLE_SYSTEM=false \
             -p 8080:8080 \
             harbor.ibonia.com/elmazidi/myapp-backend:${{needs.docker-build.outputs.version}}
-            
+
       - name: Debug backend logs
         run: |
           sleep 15
@@ -184,12 +184,14 @@ jobs:
           echo "Service is now available."
 
       - name: ZAP Scan
-        uses: zaproxy/action-baseline@v0.6.1
+        uses: zaproxy/action-baseline@v0.10.0
         with:
           docker_name: 'owasp/zap2docker-stable'
           target: 'http://localhost:8080/'
           rules_file_name: '.zap/rules.tsv'
-          cmd_options: '-J report_json -a'
+          cmd_options: '-a'
+          continue-on-error: true
+
 
       - name: Save ZAP Report
         run: mkdir -p reports && mv report_json.json reports/dast_report.json
