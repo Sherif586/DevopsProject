@@ -139,7 +139,7 @@ jobs:
           git config --global user.email "ilyasselmazidi123@gmail.com"
           git config --global user.name "ELMILYASS"
       - name: Clone the Git repository containing the K8s cluster's configuration files.
-        run: git clone https://github.com/ELMILYASS/K8sClusterDevopsProject.git
+        run: git clone https://github.com/Sherif586/K8sClusterDevopsProject.git
       - name: Update deployment version
         run: |
           cd K8sClusterDevopsProject/dev
@@ -152,6 +152,6 @@ jobs:
           git add .
           git diff --staged --quiet && echo "Nothing to commit" || git commit -m "backend version ${{needs.docker-build.outputs.version}}"
       - name: Set Git remote URL
-        run: cd K8sClusterDevopsProject && git remote set-url origin https://ELMILYASS:${{ secrets.GITHUBTOKEN }}@github.com/ELMILYASS/K8sClusterDevopsProject.git
+        run: cd K8sClusterDevopsProject && git remote set-url origin https://Sherif586:${{ secrets.GITHUBTOKEN }}@github.com/Sherif586/K8sClusterDevopsProject.git
       - name: Push changes to Github
         run: cd K8sClusterDevopsProject && git push -uf origin main
