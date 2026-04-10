@@ -30,7 +30,7 @@ jobs:
     - name: Build Distribution
       run: cd ${{ inputs.directory }} && ng build 
     - name: Archive dist folder
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ inputs.artifact-name }}
         path: ${{ inputs.directory }}/${{ inputs.artifact-name }}
