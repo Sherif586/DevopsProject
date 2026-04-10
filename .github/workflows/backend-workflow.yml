@@ -160,8 +160,11 @@ jobs:
             -e MYSQL_USERNAME=root \
             -e DB_HOST=localhost:3306 \
             -e DB_NAME=testdb \
+            -e MANAGEMENT_METRICS_ENABLE_PROCESS_FILES=false \
+            -e MANAGEMENT_METRICS_ENABLE_SYSTEM=false \
             -p 8080:8080 \
             harbor.ibonia.com/elmazidi/myapp-backend:${{needs.docker-build.outputs.version}}
+            
       - name: Debug backend logs
         run: |
           sleep 15
